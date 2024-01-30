@@ -16,23 +16,26 @@ const ICONS_BY_VARIANT = {
   warning: AlertTriangle,
   success: CheckCircle,
   error: AlertOctagon,
-};
+}
 
-function Toast() {
+function Toast({ children, variant, show, onClose }) {
+  if (!show || !children) return null
+
+  const Icon = ICONS_BY_VARIANT[variant]
+  if (!Icon) throw new Error('[Toast] No variant icon matched')
+
   return (
-    <div className={`${styles.toast} ${styles.notice}`}>
+    <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
-        <Info size={24} />
+        <Icon size={24} />
       </div>
-      <p className={styles.content}>
-        16 photos have been uploaded
-      </p>
-      <button className={styles.closeButton}>
+      <p className={styles.content}>{children}</p>
+      <button className={styles.closeButton} onClick={onClose}>
         <X size={24} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
-  );
+  )
 }
 
 export default Toast;
